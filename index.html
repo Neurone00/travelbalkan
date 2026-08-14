@@ -13,6 +13,10 @@
 <div class="time">13:30</div><div class="stop"><input id="lj3" class="check" type="checkbox"><label class="tick" for="lj3"></label><strong>Funicolare + Castello</strong><p><span class="tag">~€19</span></p><a class="map" href="https://www.google.com/maps/search/?api=1&query=Ljubljana+Castle" target="_blank">Google Maps</a></div>
 <div class="time">15:45</div><div class="stop"><input id="lj4" class="check" type="checkbox"><label class="tick" for="lj4"></label><strong>Prešeren Square + Triple Bridge + fiume</strong></div>
 <div class="time">16:45</div><div class="stop"><input id="lj5" class="check" type="checkbox"><label class="tick" for="lj5"></label><strong>Crociera sul Ljubljanica + aperitivo</strong></div>
+<div class="time">18:30 · ora</div><div class="stop new-evening"><input id="lj9" class="check" type="checkbox"><label class="tick" for="lj9"></label><strong>Aperitivo in terrazza · Nebotičnik</strong><p class="small">Rooftop del grattacielo (12° piano): spritz o un calice con vista a 360° su città e castello. Per una terrazza panoramica i prezzi restano onesti. Se preferisci spendere meno: terrazza sul fiume a Špica o lungo Cankarjevo nabrežje.</p><a class="map" href="https://www.google.com/maps/search/?api=1&query=Neboticnik+Ljubljana" target="_blank">Google Maps</a></div>
+<div class="time">19:45</div><div class="stop new-evening"><input id="lj10" class="check" type="checkbox"><label class="tick" for="lj10"></label><strong>Rientro al Tabor 9 · cambio per la cena (1,5 h)</strong><p class="small">~12 min a piedi dal centro. Doccia, cambio e ricarica prima di cena.</p><a class="map" href="https://www.google.com/maps/search/?api=1&query=Tabor+9+Ljubljana" target="_blank">Google Maps</a></div>
+<div class="time">21:15</div><div class="stop new-evening"><input id="lj11" class="check" type="checkbox"><label class="tick" for="lj11"></label><strong>Cena · Druga Violina (Stari trg)</strong><p class="small">Cucina slovena tradizionale a ottimo prezzo, tavoli all'aperto nella via del centro storico (è un'impresa sociale). Prova ričet, štruklji o la salsiccia carniolana. Alternative low-cost: Klobasarna (klobasa/ričet al volo) o Gujžina (cucina del Prekmurje) con dehors.</p><a class="map" href="https://www.google.com/maps/search/?api=1&query=Druga+Violina+Ljubljana" target="_blank">Google Maps</a></div>
+<div class="time">22:45</div><div class="stop new-evening"><input id="lj12" class="check" type="checkbox"><label class="tick" for="lj12"></label><strong>Drink in terrazza sul fiume · e poi</strong><p class="small">Spritz o cocktail sulle terrazze lungo Cankarjevo/Petkovškovo nabrežje, sul Ljubljanica: all'aperto e vivace, niente bar chiuso. In alternativa rooftop al Nebotičnik. Poi rientro a piedi al Tabor (~10 min).</p><a class="map" href="https://www.google.com/maps/search/?api=1&query=Cankarjevo+nabrezje+Ljubljana" target="_blank">Google Maps</a></div>
 <div class="time">15 · 10:30</div><div class="stop"><input id="lj6" class="check" type="checkbox"><label class="tick" for="lj6"></label><strong>ARTish → passeggiata Trnovo</strong></div>
 <div class="time">12:00</div><div class="stop"><input id="lj7" class="check" type="checkbox"><label class="tick" for="lj7"></label><strong>Plečnik House</strong><p><span class="tag">~€12</span></p><a class="map" href="https://www.google.com/maps/search/?api=1&query=Plecnik+House+Ljubljana" target="_blank">Google Maps</a></div>
 <div class="time">POM.</div><div class="stop"><input id="lj8" class="check" type="checkbox"><label class="tick" for="lj8"></label><strong>Trasferimento Ljubljana → Zagabria</strong><p class="small">Bus diretto: circa 2-2h30; molte corse giornaliere. Prenota una corsa che ti lasci una serata piena a Zagabria.</p></div></div></section>
@@ -70,13 +74,29 @@
   function persist() { try { localStorage.setItem(K, JSON.stringify(state)); localStorage.setItem(EK, JSON.stringify(edits)); } catch (e) {} }
   var state = read(K), edits = read(EK), orig = {};
 
-  editables.forEach(function (el, i) {
-    var k = 'e' + i; el.dataset.ek = k; orig[k] = el.textContent;
+  function stableKey(el) {
+    var stop = el.closest('.stop');
+    if (stop) { var cb = stop.querySelector('.check'); if (cb) return cb.id + (el.tagName === 'STRONG' ? '.t' : '.n'); }
+    var beach = el.closest('.beach');
+    if (beach) { var bs = [].slice.call(document.querySelectorAll('.beach')); return 'bch' + bs.indexOf(beach) + (el.tagName === 'B' ? '.t' : '.n'); }
+    return 'x' + [].indexOf.call(editables, el);
+  }
+  // one-time migration: old positional keys (e0, e1…) -> stable keys, so inserting stops never shifts saved edits
+  if (Object.keys(edits).some(function (k) { return /^e\d+$/.test(k); })) {
+    var oldOrder = editables.filter(function (el) { var s = el.closest('.stop'); return !(s && s.classList.contains('new-evening')); });
+    var migrated = {};
+    oldOrder.forEach(function (el, i) { var v = edits['e' + i]; if (v != null) migrated[stableKey(el)] = v; });
+    edits = migrated;
+    try { localStorage.setItem(EK, JSON.stringify(edits)); } catch (e) {}
+  }
+
+  editables.forEach(function (el) {
+    var k = stableKey(el); el.dataset.ek = k; orig[k] = el.textContent;
     el.setAttribute('contenteditable', 'true'); el.setAttribute('spellcheck', 'false');
     el.addEventListener('input', function () { edits[k] = el.textContent; onChange(); });
     el.addEventListener('keydown', function (e) { if (e.key === 'Enter' && el.tagName === 'STRONG') { e.preventDefault(); el.blur(); } });
   });
-  function applyEdits() { editables.forEach(function (el, i) { var k = 'e' + i; var v = edits[k] != null ? edits[k] : orig[k]; if (el.textContent !== v) el.textContent = v; }); }
+  function applyEdits() { editables.forEach(function (el) { var k = el.dataset.ek; var v = edits[k] != null ? edits[k] : orig[k]; if (el.textContent !== v) el.textContent = v; }); }
 
   function render() {
     var n = 0;
