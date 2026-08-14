@@ -55,9 +55,95 @@
 <div class="time">24</div><div class="stop"><input id="me5" class="check" type="checkbox"><label class="tick" for="me5"></label><strong>Drobni Pijesak / Petrovac oppure Ulcinj</strong></div></div>
 <div class="note"><b>Nota Sveti Stefan:</b> il complesso alberghiero dell'isola era previsto in riapertura entro giugno 2026 secondo il governo montenegrino; accessi e condizioni delle aree legate al resort possono quindi differire rispetto agli anni precedenti. La guida tratta la zona come base costiera e non presume accesso all'interno dell'isola.</div></section>
 <section class="card acid"><h2>Nightlife senza sacrificare il viaggio</h2><p><b>Zagabria:</b> Tkalčićeva per bar hopping easy. <b>Sarajevo:</b> cocktail/caffè nel centro, serata non troppo lunga prima del bus. <b>Dubrovnik:</b> drink nell'Old Town o Buža-style cliff bars. <b>Montenegro:</b> concentra la notte più lunga a Budva il 23, lasciando Sveti Stefan e Pržno alle serate lente.</p></section>
-<div class="footer">Travel Balkan 2026 · tocca un testo per modificarlo · tutto salvato solo sul dispositivo</div></main></div><script>(()=>{const K='travelbalkan-2026-v2',boxes=[...document.querySelectorAll('.check')],bar=document.querySelector('.bar i'),count=document.querySelector('#count');let state={};try{state=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}function render(){let n=0;boxes.forEach(x=>{x.checked=!!state[x.id];const s=x.closest('.stop');if(s)s.classList.toggle('done',x.checked);if(x.checked)n++});bar.style.width=(boxes.length?100*n/boxes.length:0)+'%';count.textContent=n+'/'+boxes.length}boxes.forEach(x=>x.addEventListener('change',()=>{state[x.id]=x.checked;localStorage.setItem(K,JSON.stringify(state));render()}));document.querySelector('#reset').onclick=()=>{if(confirm('Azzerare tutte le spunte?')){state={};localStorage.removeItem(K);render()}};
-/* Testo modificabile: titoli e note delle tappe + spiagge, salvati sul dispositivo */
-const EK='travelbalkan-2026-edits-v1';let edits={};try{edits=JSON.parse(localStorage.getItem(EK)||'{}')}catch(e){}
-const editables=[...document.querySelectorAll('.stop>strong, .stop>p.small, .beach>b, .beach>span.small')];
-editables.forEach((el,i)=>{const k='e'+i;el.dataset.ek=k;if(edits[k]!=null)el.textContent=edits[k];el.setAttribute('contenteditable','true');el.setAttribute('spellcheck','false');el.addEventListener('input',()=>{edits[k]=el.textContent;localStorage.setItem(EK,JSON.stringify(edits))});el.addEventListener('keydown',e=>{if(e.key==='Enter'&&el.tagName==='STRONG'){e.preventDefault();el.blur()}})});
-render();})();</script></body></html>
+<div class="footer">Travel Balkan 2026 · tocca un testo per modificarlo · tutto salvato solo sul dispositivo</div></main></div><script>
+(function () {
+  var K = 'travelbalkan-2026-v2';         // checkbox state
+  var EK = 'travelbalkan-2026-edits-v1';  // text edits
+  var boxes = [].slice.call(document.querySelectorAll('.check'));
+  var bar = document.querySelector('.bar i');
+  var count = document.querySelector('#count');
+  var footer = document.querySelector('.footer');
+  var editables = [].slice.call(document.querySelectorAll('.stop>strong, .stop>p.small, .beach>b, .beach>span.small'));
+
+  function read(k) { try { return JSON.parse(localStorage.getItem(k) || '{}'); } catch (e) { return {}; } }
+  function persist() { try { localStorage.setItem(K, JSON.stringify(state)); localStorage.setItem(EK, JSON.stringify(edits)); } catch (e) {} }
+  var state = read(K), edits = read(EK), orig = {};
+
+  editables.forEach(function (el, i) {
+    var k = 'e' + i; el.dataset.ek = k; orig[k] = el.textContent;
+    el.setAttribute('contenteditable', 'true'); el.setAttribute('spellcheck', 'false');
+    el.addEventListener('input', function () { edits[k] = el.textContent; onChange(); });
+    el.addEventListener('keydown', function (e) { if (e.key === 'Enter' && el.tagName === 'STRONG') { e.preventDefault(); el.blur(); } });
+  });
+  function applyEdits() { editables.forEach(function (el, i) { var k = 'e' + i; var v = edits[k] != null ? edits[k] : orig[k]; if (el.textContent !== v) el.textContent = v; }); }
+
+  function render() {
+    var n = 0;
+    boxes.forEach(function (x) { x.checked = !!state[x.id]; var s = x.closest('.stop'); if (s) s.classList.toggle('done', x.checked); if (x.checked) n++; });
+    bar.style.width = (boxes.length ? 100 * n / boxes.length : 0) + '%';
+    count.textContent = n + '/' + boxes.length;
+  }
+  boxes.forEach(function (x) { x.addEventListener('change', function () { state[x.id] = x.checked; onChange(); render(); }); });
+  document.querySelector('#reset').onclick = function () { if (confirm('Azzerare tutte le spunte?')) { state = {}; onChange(); render(); } };
+
+  /* ---------- Live sync: Cloudflare Pages Function + KV (auto-detected) ----------
+     Reachable /api/state -> shared live sync; otherwise local-only fallback. */
+  var API = 'api/state', TK = 'travelbalkan-sync-token', TOKEN = '';
+  var mode = 'local', myId = 'c' + Math.random().toString(36).slice(2, 10), lastTs = 0;
+  var pushT = null, pollT = null, pending = false, inflight = false, again = false;
+
+  function isEditing() { var a = document.activeElement; return !!a && (a.isContentEditable || a.tagName === 'INPUT'); }
+  function onChange() { persist(); if (mode === 'cloud') schedulePush(); else status('local'); }
+
+  function status(s) {
+    if (!footer) return;
+    var base = 'Travel Balkan 2026 · tocca un testo per modificarlo · ';
+    var m = { local: 'salvato sul dispositivo', syncing: 'sincronizzazione…', synced: 'sincronizzato tra i vostri dispositivi ✓', offline: 'offline, salvato qui', locked: 'apri il link condiviso per sincronizzare' };
+    footer.textContent = base + (m[s] || m.local);
+  }
+  function hdrs(j) { var h = {}; if (j) h['content-type'] = 'application/json'; if (TOKEN) h['x-sync-token'] = TOKEN; return h; }
+
+  function schedulePush() { pending = true; status('syncing'); clearTimeout(pushT); pushT = setTimeout(push, 700); }
+  function push() {
+    if (inflight) { again = true; return; }
+    inflight = true;
+    fetch(API, { method: 'PUT', headers: hdrs(true), body: JSON.stringify({ ticks: state, edits: edits, writer: myId }) })
+      .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (res) { lastTs = res.ts || lastTs; pending = false; inflight = false; status('synced'); if (again) { again = false; schedulePush(); } })
+      .catch(function () { inflight = false; status('offline'); });
+  }
+  function poll() {
+    fetch(API, { headers: hdrs(false), cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (res) {
+        if (res && res.ts && res.ts > lastTs && res.writer !== myId && !isEditing() && !pending && !inflight) {
+          lastTs = res.ts;
+          if (res.data) { state = res.data.ticks || {}; edits = res.data.edits || {}; persist(); applyEdits(); render(); }
+          status('synced');
+        }
+      })
+      .catch(function () {});
+  }
+  function boot() {
+    try {
+      var mm = (location.hash || '').match(/(?:^#|[#&])(?:key|k)=([^&]+)/);
+      if (mm) { TOKEN = decodeURIComponent(mm[1]); localStorage.setItem(TK, TOKEN); history.replaceState(null, '', location.pathname + location.search); }
+      else { TOKEN = localStorage.getItem(TK) || ''; }
+    } catch (e) {}
+    fetch(API, { headers: hdrs(false), cache: 'no-store' })
+      .then(function (r) { if (r.status === 401) { status('locked'); return null; } if (!r.ok) throw 0; return r.json(); })
+      .then(function (res) {
+        if (res === null) return;
+        mode = 'cloud';
+        if (res.data && res.ts) { lastTs = res.ts; state = res.data.ticks || state; edits = res.data.edits || edits; persist(); applyEdits(); render(); }
+        else { push(); }
+        status('synced');
+        clearInterval(pollT); pollT = setInterval(poll, 5000);
+        document.addEventListener('visibilitychange', function () { if (!document.hidden && mode === 'cloud') poll(); });
+      })
+      .catch(function () { mode = 'local'; status('local'); });
+  }
+
+  applyEdits(); render(); status('local'); boot();
+})();
+</script></body></html>
