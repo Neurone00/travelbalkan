@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Balkan Trip Checklist</title>
+<style>
+  :root {
+    --bg: #f4f7f6;
+    --panel: #ffffff;
+    --ink: #16302b;
+    --muted: #5c7168;
+    --line: #e0e8e4;
+    --accent: #0f766e;
+    --accent-soft: #d9f0ec;
+    --danger: #c2410c;
+    --done: #94a89f;
+    --shadow: 0 1px 2px rgba(16,48,43,.06), 0 8px 24px rgba(16,48,43,.06);
+    --radius: 16px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e1614;
+      --panel: #16211e;
+      --ink: #e8f0ed;
+      --muted: #93a8a0;
+      --line: #26332f;
+      --accent: #2dd4bf;
+      --accent-soft: #113330;
+      --danger: #fb923c;
+      --done: #6b7c76;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 20px 16px 96px; }
+
+  header { margin-bottom: 18px; }
+  h1 {
+    font-size: clamp(24px, 6vw, 34px);
+    margin: 0 0 4px;
+    letter-spacing: -.02em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  h1 .flag { font-size: .9em; }
+  .subtitle { color: var(--muted); margin: 0; font-size: 15px; }
+  [contenteditable] { outline: none; }
+  [contenteditable]:focus { box-shadow: inset 0 -2px 0 var(--accent); border-radius: 2px; }
+
+  .progress-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    margin: 16px 0 22px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .ring { position: relative; width: 58px; height: 58px; flex: none; }
+  .ring svg { transform: rotate(-90deg); }
+  .ring .track { stroke: var(--line); }
+  .ring .fill { stroke: var(--accent); stroke-linecap: round; transition: stroke-dashoffset .4s ease; }
+  .ring .pct {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    font-weight: 700; font-size: 15px;
+  }
+  .progress-meta { flex: 1; min-width: 0; }
+  .progress-meta .big { font-weight: 600; }
+  .progress-meta .small { color: var(--muted); font-size: 13px; }
+
+  .section {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .section-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 14px 12px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-emoji {
+    font-size: 20px; cursor: pointer; user-select: none;
+    border: none; background: transparent; padding: 0; line-height: 1;
+  }
+  .section-title {
+    font-weight: 700; font-size: 17px; flex: 1; min-width: 0;
+    letter-spacing: -.01em;
+  }
+  .section-count {
+    font-size: 12px; color: var(--muted); background: var(--bg);
+    border: 1px solid var(--line); border-radius: 999px; padding: 3px 9px; white-space: nowrap;
+  }
+  .items { list-style: none; margin: 0; padding: 6px 6px 10px; }
+  .item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 9px 10px; border-radius: 12px;
+  }
+  .item:hover { background: var(--bg); }
+  .item .box {
+    appearance: none; -webkit-appearance: none;
+    width: 22px; height: 22px; margin: 1px 0 0; flex: none;
+    border: 2px solid var(--muted); border-radius: 7px; cursor: pointer;
+    display: grid; place-items: center; transition: .15s; background: transparent;
+  }
+  .item .box:checked { background: var(--accent); border-color: var(--accent); }
+  .item .box:checked::after {
+    content: ""; width: 6px; height: 11px;
+    border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg) translate(-.5px,-1px);
+  }
+  @media (prefers-color-scheme: dark) { .item .box:checked::after { border-color: #06110f; } }
+  .item .text { flex: 1; min-width: 0; padding-top: 1px; word-break: break-word; }
+  .item.done .text { color: var(--done); text-decoration: line-through; text-decoration-thickness: 1px; }
+  .item .del {
+    border: none; background: transparent; color: var(--muted);
+    cursor: pointer; font-size: 17px; line-height: 1; padding: 2px 4px;
+    opacity: 0; transition: .15s; flex: none; border-radius: 8px;
+  }
+  .item:hover .del, .item:focus-within .del { opacity: 1; }
+  .item .del:hover { color: var(--danger); background: var(--bg); }
+
+  .add-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 12px 4px; color: var(--muted); cursor: text;
+    font-size: 14px;
+  }
+  .add-item::before { content: "+"; font-size: 18px; line-height: 1; }
+  .add-item input {
+    flex: 1; border: none; background: transparent; color: var(--ink);
+    font: inherit; padding: 6px 0; outline: none;
+  }
+  .add-item input::placeholder { color: var(--muted); }
+
+  .toolbar {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px;
+  }
+  button.tool {
+    border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+    border-radius: 10px; padding: 9px 14px; font: inherit; font-size: 14px;
+    cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+    box-shadow: var(--shadow);
+  }
+  button.tool:hover { border-color: var(--accent); color: var(--accent); }
+  button.tool.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  @media (prefers-color-scheme: dark){ button.tool.primary { color:#06110f; } }
+  button.tool.primary:hover { filter: brightness(1.05); color: #fff; }
+  @media (prefers-color-scheme: dark){ button.tool.primary:hover { color:#06110f; } }
+
+  .saved-tag {
+    color: var(--muted); font-size: 13px; margin-left: auto;
+    display: inline-flex; align-items: center; gap: 6px; align-self: center;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 28px; }
+  input[type=file] { display: none; }
+
+  @media print {
+    body { background: #fff; }
+    .toolbar, .add-item, .item .del, .section-count, .saved-tag, footer { display: none !important; }
+    .section, .progress-card { box-shadow: none; border-color: #ccc; break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1><span class="flag">🏔️</span><span contenteditable="true" id="pageTitle" spellcheck="false">Balkan Trip Checklist</span></h1>
+    <p class="subtitle" contenteditable="true" id="pageSub" spellcheck="false">Our shared plan — tap anything to edit. Saves automatically on this device.</p>
+  </header>
+
+  <div class="progress-card">
+    <div class="ring">
+      <svg width="58" height="58" viewBox="0 0 58 58">
+        <circle class="track" cx="29" cy="29" r="25" fill="none" stroke-width="6"></circle>
+        <circle class="fill" cx="29" cy="29" r="25" fill="none" stroke-width="6"
+                stroke-dasharray="157" stroke-dashoffset="157" id="ringFill"></circle>
+      </svg>
+      <div class="pct" id="ringPct">0%</div>
+    </div>
+    <div class="progress-meta">
+      <div class="big" id="progBig">Let's get packing</div>
+      <div class="small" id="progSmall">0 of 0 done</div>
+    </div>
+  </div>
+
+  <div id="sections"></div>
+
+  <div class="toolbar">
+    <button class="tool primary" id="addSection">＋ Add section</button>
+    <button class="tool" id="exportBtn">⬇ Export</button>
+    <button class="tool" id="importBtn">⬆ Import</button>
+    <button class="tool" id="printBtn">🖨 Print / PDF</button>
+    <button class="tool" id="resetBtn">↺ Reset</button>
+    <input type="file" id="importFile" accept="application/json,.json">
+    <span class="saved-tag"><span class="dot"></span><span id="savedText">Saved</span></span>
+  </div>
+
+  <footer>Everything you type is stored privately in this browser. Use Export to back up or share with your partner.</footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var STORE_KEY = "balkan-checklist-v1";
+
+  var DEFAULT_DATA = {
+    title: "Balkan Trip Checklist",
+    subtitle: "Our shared plan — tap anything to edit. Saves automatically on this device.",
+    sections: [
+      { emoji: "🛂", name: "Documents & money", items: [
+        "Passports valid 6+ months",
+        "Print + photo of passports (cloud backup)",
+        "EHIC / travel insurance details",
+        "Driving licence + IDP (car hire)",
+        "Some euros + a card that works abroad",
+        "Note: many countries are NOT euro — check currency per stop",
+        "Vaccination / health notes"
+      ]},
+      { emoji: "🧳", name: "Packing", items: [
+        "Light layers + one warm jumper (mountains get cold)",
+        "Rain jacket",
+        "Comfortable walking shoes",
+        "Swimwear (coast + lakes)",
+        "Universal plug adapter (Type C/F)",
+        "Power bank",
+        "Toiletries + any medication",
+        "Reusable water bottle"
+      ]},
+      { emoji: "📱", name: "Before we go", items: [
+        "Download offline maps (each country)",
+        "eSIM / roaming sorted",
+        "Screenshot all bookings",
+        "Tell bank we're travelling",
+        "Share itinerary with family",
+        "Check driving rules (vignettes, tolls)"
+      ]},
+      { emoji: "🏨", name: "Bookings", items: [
+        "Flights",
+        "First & last night accommodation",
+        "Car hire",
+        "Any must-do tours / tickets"
+      ]},
+      { emoji: "🗺️", name: "Places we want to see", items: [
+        "Kotor Bay, Montenegro",
+        "Old Town, Dubrovnik",
+        "Mostar bridge, Bosnia",
+        "Lake Ohrid, North Macedonia",
+        "Theth / Valbona, Albanian Alps",
+        "Add your own…"
+      ]}
+    ]
+  };
+
+  var data = load();
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      if (!raw) return clone(DEFAULT_DATA);
+      var parsed = JSON.parse(raw);
+      if (!parsed || !Array.isArray(parsed.sections)) return clone(DEFAULT_DATA);
+      return parsed;
+    } catch (e) { return clone(DEFAULT_DATA); }
+  }
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+  function uid() { return "i" + (idCounter++); }
+  var idCounter = 0;
+
+  // normalise items -> {id, text, done}
+  data.sections.forEach(function (s) {
+    s.id = s.id || uid();
+    s.items = (s.items || []).map(function (it) {
+      if (typeof it === "string") return { id: uid(), text: it, done: false };
+      return { id: it.id || uid(), text: it.text || "", done: !!it.done };
+    });
+  });
+
+  var saveTimer = null;
+  function save() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
+    var st = document.getElementById("savedText");
+    st.textContent = "Saving…";
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () { st.textContent = "Saved"; }, 500);
+  }
+
+  var sectionsEl = document.getElementById("sections");
+
+  function render() {
+    sectionsEl.innerHTML = "";
+    data.sections.forEach(function (section) {
+      sectionsEl.appendChild(renderSection(section));
+    });
+    updateProgress();
+  }
+
+  function renderSection(section) {
+    var el = document.createElement("section");
+    el.className = "section";
+
+    var head = document.createElement("div");
+    head.className = "section-head";
+
+    var emoji = document.createElement("button");
+    emoji.className = "section-emoji";
+    emoji.textContent = section.emoji || "📌";
+    emoji.title = "Change icon";
+    emoji.addEventListener("click", function () {
+      var v = prompt("Icon for this section (an emoji):", section.emoji || "");
+      if (v !== null) { section.emoji = v.trim().slice(0, 4) || section.emoji; emoji.textContent = section.emoji; save(); }
+    });
+
+    var title = document.createElement("div");
+    title.className = "section-title";
+    title.contentEditable = "true";
+    title.spellcheck = false;
+    title.textContent = section.name;
+    title.addEventListener("input", function () { section.name = title.textContent; save(); });
+
+    var count = document.createElement("span");
+    count.className = "section-count";
+
+    var delSec = document.createElement("button");
+    delSec.className = "item";
+    delSec.style.cssText = "border:none;background:transparent;color:var(--muted);cursor:pointer;padding:2px 6px;font-size:16px;";
+    delSec.textContent = "🗑";
+    delSec.title = "Delete section";
+    delSec.addEventListener("click", function () {
+      if (confirm('Delete section "' + section.name + '" and all its items?')) {
+        data.sections = data.sections.filter(function (s) { return s.id !== section.id; });
+        save(); render();
+      }
+    });
+
+    head.appendChild(emoji);
+    head.appendChild(title);
+    head.appendChild(count);
+    head.appendChild(delSec);
+
+    var list = document.createElement("ul");
+    list.className = "items";
+
+    section.items.forEach(function (item) {
+      list.appendChild(renderItem(section, item, count));
+    });
+
+    var add = document.createElement("label");
+    add.className = "add-item";
+    var input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = "Add an item…";
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        var text = input.value.trim();
+        if (text) {
+          var item = { id: uid(), text: text, done: false };
+          section.items.push(item);
+          list.insertBefore(renderItem(section, item, count), add);
+          input.value = "";
+          save(); updateCount(section, count); updateProgress();
+        }
+      }
+    });
+    add.appendChild(input);
+    list.appendChild(add);
+
+    el.appendChild(head);
+    el.appendChild(list);
+    updateCount(section, count);
+    return el;
+  }
+
+  function renderItem(section, item, countEl) {
+    var li = document.createElement("li");
+    li.className = "item" + (item.done ? " done" : "");
+
+    var box = document.createElement("input");
+    box.type = "checkbox";
+    box.className = "box";
+    box.checked = item.done;
+    box.addEventListener("change", function () {
+      item.done = box.checked;
+      li.classList.toggle("done", item.done);
+      save(); updateCount(section, countEl); updateProgress();
+    });
+
+    var text = document.createElement("div");
+    text.className = "text";
+    text.contentEditable = "true";
+    text.spellcheck = false;
+    text.textContent = item.text;
+    text.addEventListener("input", function () { item.text = text.textContent; save(); });
+    text.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); text.blur(); }
+    });
+
+    var del = document.createElement("button");
+    del.className = "del";
+    del.innerHTML = "✕";
+    del.title = "Delete";
+    del.addEventListener("click", function () {
+      section.items = section.items.filter(function (x) { return x.id !== item.id; });
+      li.remove();
+      save(); updateCount(section, countEl); updateProgress();
+    });
+
+    li.appendChild(box);
+    li.appendChild(text);
+    li.appendChild(del);
+    return li;
+  }
+
+  function updateCount(section, countEl) {
+    var total = section.items.length;
+    var done = section.items.filter(function (i) { return i.done; }).length;
+    countEl.textContent = done + "/" + total;
+  }
+
+  function updateProgress() {
+    var total = 0, done = 0;
+    data.sections.forEach(function (s) {
+      total += s.items.length;
+      done += s.items.filter(function (i) { return i.done; }).length;
+    });
+    var pct = total ? Math.round((done / total) * 100) : 0;
+    var C = 2 * Math.PI * 25;
+    document.getElementById("ringFill").setAttribute("stroke-dasharray", C.toFixed(1));
+    document.getElementById("ringFill").setAttribute("stroke-dashoffset", (C * (1 - pct / 100)).toFixed(1));
+    document.getElementById("ringPct").textContent = pct + "%";
+    document.getElementById("progSmall").textContent = done + " of " + total + " done";
+    var big = "Let's get packing";
+    if (pct === 100 && total > 0) big = "All done — dobar put! 🎉";
+    else if (pct >= 66) big = "Nearly there";
+    else if (pct >= 33) big = "Making progress";
+    else if (done > 0) big = "Off we go";
+    document.getElementById("progBig").textContent = big;
+  }
+
+  // Title / subtitle editing
+  var titleEl = document.getElementById("pageTitle");
+  var subEl = document.getElementById("pageSub");
+  titleEl.textContent = data.title || DEFAULT_DATA.title;
+  subEl.textContent = data.subtitle || DEFAULT_DATA.subtitle;
+  document.title = titleEl.textContent + " · checklist";
+  titleEl.addEventListener("input", function () { data.title = titleEl.textContent; document.title = titleEl.textContent + " · checklist"; save(); });
+  titleEl.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); titleEl.blur(); } });
+  subEl.addEventListener("input", function () { data.subtitle = subEl.textContent; save(); });
+
+  // Toolbar
+  document.getElementById("addSection").addEventListener("click", function () {
+    var section = { id: uid(), emoji: "📌", name: "New section", items: [] };
+    data.sections.push(section);
+    var node = renderSection(section);
+    sectionsEl.appendChild(node);
+    updateProgress(); save();
+    var t = node.querySelector(".section-title");
+    t.focus();
+    document.getSelection().selectAllChildren(t);
+    node.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
+  document.getElementById("resetBtn").addEventListener("click", function () {
+    if (confirm("Reset the whole checklist back to the starter list? This clears your current one on this device.")) {
+      data = clone(DEFAULT_DATA);
+      data.sections.forEach(function (s) {
+        s.id = uid();
+        s.items = s.items.map(function (t) { return { id: uid(), text: t, done: false }; });
+      });
+      titleEl.textContent = data.title; subEl.textContent = data.subtitle;
+      save(); render();
+    }
+  });
+
+  document.getElementById("printBtn").addEventListener("click", function () { window.print(); });
+
+  document.getElementById("exportBtn").addEventListener("click", function () {
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "balkan-checklist.json";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  });
+
+  document.getElementById("importBtn").addEventListener("click", function () {
+    document.getElementById("importFile").click();
+  });
+  document.getElementById("importFile").addEventListener("change", function (e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var parsed = JSON.parse(reader.result);
+        if (!parsed || !Array.isArray(parsed.sections)) throw new Error("bad");
+        data = parsed;
+        data.sections.forEach(function (s) {
+          s.id = s.id || uid();
+          s.items = (s.items || []).map(function (it) {
+            if (typeof it === "string") return { id: uid(), text: it, done: false };
+            return { id: it.id || uid(), text: it.text || "", done: !!it.done };
+          });
+        });
+        titleEl.textContent = data.title || DEFAULT_DATA.title;
+        subEl.textContent = data.subtitle || DEFAULT_DATA.subtitle;
+        save(); render();
+        alert("Checklist imported.");
+      } catch (err) { alert("That file didn't look like a checklist export."); }
+      e.target.value = "";
+    };
+    reader.readAsText(file);
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
