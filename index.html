@@ -5,17 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
 <title>Balkan Trip Checklist</title>
-<script>
-  // If opened via the GitHub Pages URL, bounce to the nicer Cloudflare URL
-  // (which also has the live shared sync). Update CF_URL to match your
-  // Cloudflare Pages project name or custom domain.
-  (function () {
-    var CF_URL = "https://travelbalkan.pages.dev";
-    if (/(^|\.)github\.io$/i.test(location.hostname)) {
-      location.replace(CF_URL + location.hash);
-    }
-  })();
-</script>
 <style>
   :root {
     --bg: #f4f7f6;
@@ -211,7 +200,6 @@
     <button class="tool primary" id="addSection">＋ Add section</button>
     <button class="tool" id="exportBtn">⬇ Export</button>
     <button class="tool" id="importBtn">⬆ Import</button>
-    <button class="tool" id="shareBtn">🔗 Copy link</button>
     <button class="tool" id="printBtn">🖨 Print / PDF</button>
     <button class="tool" id="resetBtn">↺ Reset</button>
     <input type="file" id="importFile" accept="application/json,.json">
@@ -288,7 +276,6 @@
   function clone(o) { return JSON.parse(JSON.stringify(o)); }
   function uid() { return "i" + (idCounter++); }
   var idCounter = 0;
-  var mode = "local"; // becomes "cloud" when the sync backend is reachable
 
   function normalize(d) {
     var out = (d && Array.isArray(d.sections)) ? d : clone(DEFAULT_DATA);
@@ -309,13 +296,9 @@
   var saveTimer = null;
   function save() {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
-    if (mode === "cloud") {
-      schedulePush();
-    } else {
-      setStatus("saving");
-      clearTimeout(saveTimer);
-      saveTimer = setTimeout(function () { setStatus("saved"); }, 500);
-    }
+    setStatus("saving");
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () { setStatus("saved"); }, 500);
   }
 
   var sectionsEl = document.getElementById("sections");
@@ -494,10 +477,7 @@
   });
 
   document.getElementById("resetBtn").addEventListener("click", function () {
-    var msg = mode === "cloud"
-      ? "Reset the shared checklist back to the starter list? This replaces it for both of you."
-      : "Reset the whole checklist back to the starter list? This clears your current one on this device.";
-    if (confirm(msg)) {
+    if (confirm("Reset the whole checklist back to the starter list? This clears your current one on this device.")) {
       applyData(clone(DEFAULT_DATA));
       save();
     }
@@ -535,65 +515,9 @@
     reader.readAsText(file);
   });
 
-  render();
-  setStatus("saved");
-
-  /* -------- Live sync (Cloudflare Pages Function + KV) --------
-     The page works fine with no backend (saves to this browser only).
-     When the "/api/data" endpoint is reachable — i.e. it's hosted on
-     Cloudflare with the KV binding — it switches to shared live sync. */
-  var API = "api/data";
-  var TOKEN_KEY = "balkan-sync-token";
-  var SYNC_TOKEN = "";
-  var myId = "c" + Math.random().toString(36).slice(2, 10);
-  var lastTs = 0;
-  var pushTimer = null, pollTimer = null;
-  var pendingPush = false, pushInFlight = false, pushAgain = false;
-  var toastTimer = null;
-
-  function readToken() {
-    try {
-      var m = (location.hash || "").match(/(?:^#|[#&])(?:key|k)=([^&]+)/);
-      if (m) {
-        SYNC_TOKEN = decodeURIComponent(m[1]);
-        localStorage.setItem(TOKEN_KEY, SYNC_TOKEN);
-        history.replaceState(null, "", location.pathname + location.search);
-      } else {
-        SYNC_TOKEN = localStorage.getItem(TOKEN_KEY) || "";
-      }
-    } catch (e) { SYNC_TOKEN = ""; }
-    return SYNC_TOKEN;
-  }
-
-  function hdrs(withJson) {
-    var h = {};
-    if (withJson) h["content-type"] = "application/json";
-    if (SYNC_TOKEN) h["x-sync-token"] = SYNC_TOKEN;
-    return h;
-  }
-
   function setStatus(state) {
     var st = document.getElementById("savedText");
-    var dot = document.querySelector(".saved-tag .dot");
-    var map = {
-      saved:   ["Saved on this device", "var(--muted)"],
-      saving:  ["Saving…",              "var(--muted)"],
-      synced:  ["Synced",               "var(--accent)"],
-      syncing: ["Syncing…",             "#d97706"],
-      offline: ["Offline — saved here", "#c2410c"],
-      locked:  ["Open the shared link", "#c2410c"]
-    };
-    var m = map[state] || map.saved;
-    if (st) st.textContent = m[0];
-    if (dot) dot.style.background = m[1];
-  }
-
-  function toast(msg) {
-    var st = document.getElementById("savedText");
-    if (!st) return;
-    st.textContent = msg;
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () { setStatus(mode === "cloud" ? "synced" : "saved"); }, 1800);
+    if (st) st.textContent = state === "saving" ? "Saving…" : "Saved on this device";
   }
 
   function applyData(d) {
@@ -605,92 +529,8 @@
     render();
   }
 
-  function isEditing() {
-    var a = document.activeElement;
-    return !!a && (a.isContentEditable || a.tagName === "INPUT");
-  }
-
-  function schedulePush() {
-    pendingPush = true;
-    setStatus("syncing");
-    clearTimeout(pushTimer);
-    pushTimer = setTimeout(doPush, 700);
-  }
-
-  function doPush() {
-    if (pushInFlight) { pushAgain = true; return; }
-    pushInFlight = true;
-    fetch(API, { method: "PUT", headers: hdrs(true), body: JSON.stringify({ data: data, writer: myId }) })
-      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-      .then(function (res) {
-        lastTs = res.ts || lastTs;
-        pendingPush = false; pushInFlight = false;
-        setStatus("synced");
-        if (pushAgain) { pushAgain = false; schedulePush(); }
-      })
-      .catch(function () {
-        pushInFlight = false;
-        setStatus("offline"); // keep pendingPush; next change or reconnect retries
-      });
-  }
-
-  function poll() {
-    fetch(API, { headers: hdrs(false), cache: "no-store" })
-      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-      .then(function (res) {
-        if (res && res.ts && res.ts > lastTs && res.writer !== myId &&
-            !isEditing() && !pendingPush && !pushInFlight) {
-          lastTs = res.ts;
-          if (res.data) applyData(res.data);
-          setStatus("synced");
-        }
-      })
-      .catch(function () { /* transient network blips are ignored */ });
-  }
-
-  function shareLink() {
-    var url = location.origin + location.pathname +
-              (SYNC_TOKEN ? "#key=" + encodeURIComponent(SYNC_TOKEN) : "");
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(url).then(
-        function () { toast("Link copied — send it to your partner"); },
-        function () { window.prompt("Copy this link:", url); }
-      );
-    } else {
-      window.prompt("Copy this link:", url);
-    }
-  }
-  document.getElementById("shareBtn").addEventListener("click", shareLink);
-
-  function boot() {
-    readToken();
-    fetch(API, { headers: hdrs(false), cache: "no-store" })
-      .then(function (r) {
-        if (r.status === 401) { mode = "local"; setStatus("locked"); return null; }
-        if (!r.ok) throw new Error(r.status);
-        return r.json();
-      })
-      .then(function (res) {
-        if (res === null) return;            // reached the API but locked
-        mode = "cloud";
-        if (res.data) {
-          lastTs = res.ts || 0;
-          applyData(res.data);
-          setStatus("synced");
-        } else {
-          // Empty shared store — seed it with what we have on this device.
-          doPush();
-        }
-        clearInterval(pollTimer);
-        pollTimer = setInterval(poll, 5000);
-        document.addEventListener("visibilitychange", function () {
-          if (!document.hidden && mode === "cloud") poll();
-        });
-      })
-      .catch(function () { mode = "local"; setStatus("saved"); });
-  }
-
-  boot();
+  render();
+  setStatus("saved");
 })();
 </script>
 </body>
