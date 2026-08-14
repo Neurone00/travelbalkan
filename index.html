@@ -1,537 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0f766e">
-<title>Balkan Trip Checklist</title>
-<style>
-  :root {
-    --bg: #f4f7f6;
-    --panel: #ffffff;
-    --ink: #16302b;
-    --muted: #5c7168;
-    --line: #e0e8e4;
-    --accent: #0f766e;
-    --accent-soft: #d9f0ec;
-    --danger: #c2410c;
-    --done: #94a89f;
-    --shadow: 0 1px 2px rgba(16,48,43,.06), 0 8px 24px rgba(16,48,43,.06);
-    --radius: 16px;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #0e1614;
-      --panel: #16211e;
-      --ink: #e8f0ed;
-      --muted: #93a8a0;
-      --line: #26332f;
-      --accent: #2dd4bf;
-      --accent-soft: #113330;
-      --danger: #fb923c;
-      --done: #6b7c76;
-      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
-    }
-  }
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { margin: 0; }
-  body {
-    background: var(--bg);
-    color: var(--ink);
-    font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-  }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 20px 16px 96px; }
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Travel Balkan 2026</title><style>
+:root{--ink:#242126;--muted:#746e74;--bg:#fbfaf9;--paper:#fff;--powder:#f1d7de;--acid:#dfff38;--line:#e8e4e5;--darkpink:#8d5968}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.58 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:760px;margin:auto}.hero{padding:54px 22px 34px;background:#fff;border-bottom:1px solid var(--line)}h1{font:500 clamp(42px,13vw,68px)/.95 Georgia,serif;margin:10px 0 18px}h2{font:500 29px/1.1 Georgia,serif;margin:0 0 16px}h3{font-size:17px;margin:18px 0 7px}.kicker{font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--darkpink)}.route{display:flex;gap:8px;overflow:auto;padding:12px 14px;position:sticky;top:0;z-index:10;background:#fbfaf9ee;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.route a,.map{white-space:nowrap;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 12px;font-size:12px;font-weight:800}.map{display:inline-block;margin-top:6px}.route a.active{background:var(--acid);border-color:var(--acid)}main{padding:20px 10px 50px}.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:21px 18px;margin:0 0 15px}.acid{border-top:3px solid var(--acid)}.powder{border-top:3px solid var(--powder)}.note{background:#fffdf0;border:1px solid #eeead2;border-radius:14px;padding:12px 13px;margin:12px 0}.small{font-size:13px;color:var(--muted)}.tag{display:inline-block;font-size:11px;font-weight:900;background:var(--acid);padding:3px 7px;border-radius:7px;margin-right:5px}.pinktag{background:var(--powder)}.timeline{display:grid;grid-template-columns:58px 1fr;gap:0 11px}.time{font-size:12px;font-weight:900;color:var(--darkpink);padding-top:14px}.stop{position:relative;padding:11px 42px 23px 16px;border-left:1px solid #ddd8da}.stop:before{content:"";position:absolute;left:-4px;top:18px;width:7px;height:7px;border-radius:50%;background:var(--acid)}.stop strong{display:block;font-size:16px}.check{position:absolute;opacity:0}.tick{position:absolute;right:0;top:8px;width:29px;height:29px;border:1px solid var(--line);border-radius:9px;display:grid;place-items:center;background:#fff}.tick:after{content:"✓";font-weight:900;opacity:0}.check:checked+.tick{background:var(--acid);border-color:var(--acid)}.check:checked+.tick:after{opacity:1}.done strong{text-decoration:line-through;opacity:.5}.progress{display:flex;align-items:center;gap:10px;margin:0 4px 16px}.bar{height:7px;flex:1;background:#ece9ea;border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:var(--acid)}button{border:0;background:transparent;color:var(--darkpink);font-weight:800}.transfer{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start}.beaches{display:grid;grid-template-columns:1fr 1fr;gap:9px}.beach{border:1px solid var(--line);border-radius:14px;padding:12px}.beach b{display:block}.stall{padding:9px 0;border-bottom:1px solid var(--line)}.footer{text-align:center;padding:20px 0 46px;color:var(--muted);font-size:11px}@media(max-width:500px){.beaches{grid-template-columns:1fr}.card{padding:19px 15px}.hero{padding-top:44px}}
+[contenteditable]{outline:none;cursor:text}[contenteditable]:focus{outline:2px solid var(--acid);outline-offset:3px;border-radius:5px}[data-ek]:hover{background:#fbfbe8}
+</style></head><body><div class="wrap"><header class="hero"><div class="kicker">Balkan trip · agosto 2026</div><h1>Ljubljana →<br>Zagreb → Sarajevo → Dubrovnik → Sveti Stefan</h1><p>Guida mobile-first con checklist persistente, Google Maps e itinerari pensati per ridurre spostamenti inutili.</p></header><nav class="route"><a href="#lj">Ljubljana</a><a href="#zg">Zagabria</a><a href="#sa">Sarajevo</a><a href="#du">Dubrovnik</a><a href="#me">Montenegro</a></nav><main><div class="progress"><div class="bar"><i></i></div><span id="count" class="small">0/0</span><button id="reset">Azzera</button></div>
+<section class="card acid"><h2>Rotta</h2><p><span class="tag">14-15 AGO</span> Ljubljana · <span class="tag pinktag">15-16</span> Zagabria · <span class="tag">16-18</span> Sarajevo · <span class="tag pinktag">18-20</span> Dubrovnik · <span class="tag">20-25</span> Sveti Stefan / Montenegro.</p><p class="small">Per i trasferimenti transfrontalieri tieni margine: in alta stagione i tempi reali possono aumentare per traffico e controlli di frontiera.</p></section>
 
-  header { margin-bottom: 18px; }
-  h1 {
-    font-size: clamp(24px, 6vw, 34px);
-    margin: 0 0 4px;
-    letter-spacing: -.02em;
-    display: flex; align-items: center; gap: 10px;
-  }
-  h1 .flag { font-size: .9em; }
-  .subtitle { color: var(--muted); margin: 0; font-size: 15px; }
-  [contenteditable] { outline: none; }
-  [contenteditable]:focus { box-shadow: inset 0 -2px 0 var(--accent); border-radius: 2px; }
+<section id="lj" class="card powder"><div class="kicker">14-15 agosto · base Tabor 9</div><h2>Ljubljana</h2><div class="timeline">
+<div class="time">14 · 10:30</div><div class="stop"><input id="lj1" class="check" type="checkbox"><label class="tick" for="lj1"></label><strong>Dragon Bridge → Mercato Centrale</strong><p class="small">Già fatto.</p><a class="map" href="https://www.google.com/maps/search/?api=1&query=Dragon+Bridge+Ljubljana" target="_blank">Google Maps</a></div>
+<div class="time">11:22</div><div class="stop"><input id="ljcoffee" class="check" type="checkbox"><label class="tick" for="ljcoffee"></label><strong>Caffè veloce</strong><p class="small">Pausa breve in centro, senza restare al mercato.</p></div>
+<div class="time">11:35</div><div class="stop"><input id="ljloop" class="check" type="checkbox"><label class="tick" for="ljloop"></label><strong>Mini loop Old Town: Cattedrale → Mestni trg → Butchers’ Bridge → Mercato</strong><p class="small">Passeggiata di circa 35-40 minuti. Il link apre un unico itinerario a piedi su Google Maps con tutte le tappe intermedie e termina a Pogačarjev trg per il pranzo. Evita Dragon Bridge, già visto.</p><a class="map" href="https://www.google.com/maps/dir/?api=1&amp;destination=Pogacarjev+trg+Ljubljana&amp;waypoints=St+Nicholas+Cathedral+Ljubljana%7CMestni+trg+Ljubljana%7CButchers+Bridge+Ljubljana&amp;travelmode=walking" target="_blank">Google Maps · percorso completo</a></div>
+<div class="time">12:15–12:30</div><div class="stop"><input id="lj2" class="check" type="checkbox"><label class="tick" for="lj2"></label><strong>Pranzo al Mercato Centrale · Odprta kuhna</strong><div class="stall"><b>Moji štruklji Slovenije</b> · štruklji dolci/salati</div><div class="stall"><b>Dvor Jezeršek</b> · sloveno contemporaneo</div><div class="stall"><b>Črna kuhna & Vinski raj Glavinič</b> · Stiria + vino</div><div class="stall"><b>Skuhna</b> · cucine dal mondo</div><div class="stall"><b>Veganika</b> · plant-based</div><a class="map" href="https://www.google.com/maps/search/?api=1&query=Pogacarjev+trg+Ljubljana" target="_blank">Google Maps</a></div>
+<div class="time">13:30</div><div class="stop"><input id="lj3" class="check" type="checkbox"><label class="tick" for="lj3"></label><strong>Funicolare + Castello</strong><p><span class="tag">~€19</span></p><a class="map" href="https://www.google.com/maps/search/?api=1&query=Ljubljana+Castle" target="_blank">Google Maps</a></div>
+<div class="time">15:45</div><div class="stop"><input id="lj4" class="check" type="checkbox"><label class="tick" for="lj4"></label><strong>Prešeren Square + Triple Bridge + fiume</strong></div>
+<div class="time">16:45</div><div class="stop"><input id="lj5" class="check" type="checkbox"><label class="tick" for="lj5"></label><strong>Crociera sul Ljubljanica + aperitivo</strong></div>
+<div class="time">15 · 10:30</div><div class="stop"><input id="lj6" class="check" type="checkbox"><label class="tick" for="lj6"></label><strong>ARTish → passeggiata Trnovo</strong></div>
+<div class="time">12:00</div><div class="stop"><input id="lj7" class="check" type="checkbox"><label class="tick" for="lj7"></label><strong>Plečnik House</strong><p><span class="tag">~€12</span></p><a class="map" href="https://www.google.com/maps/search/?api=1&query=Plecnik+House+Ljubljana" target="_blank">Google Maps</a></div>
+<div class="time">POM.</div><div class="stop"><input id="lj8" class="check" type="checkbox"><label class="tick" for="lj8"></label><strong>Trasferimento Ljubljana → Zagabria</strong><p class="small">Bus diretto: circa 2-2h30; molte corse giornaliere. Prenota una corsa che ti lasci una serata piena a Zagabria.</p></div></div></section>
 
-  .progress-card {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 16px 18px;
-    margin: 16px 0 22px;
-    display: flex; align-items: center; gap: 16px;
-  }
-  .ring { position: relative; width: 58px; height: 58px; flex: none; }
-  .ring svg { transform: rotate(-90deg); }
-  .ring .track { stroke: var(--line); }
-  .ring .fill { stroke: var(--accent); stroke-linecap: round; transition: stroke-dashoffset .4s ease; }
-  .ring .pct {
-    position: absolute; inset: 0; display: grid; place-items: center;
-    font-weight: 700; font-size: 15px;
-  }
-  .progress-meta { flex: 1; min-width: 0; }
-  .progress-meta .big { font-weight: 600; }
-  .progress-meta .small { color: var(--muted); font-size: 13px; }
+<section id="zg" class="card acid"><div class="kicker">15-16 agosto · 1 notte</div><h2>Zagabria</h2><div class="timeline">
+<div class="time">15 · sera</div><div class="stop"><input id="zg1" class="check" type="checkbox"><label class="tick" for="zg1"></label><strong>Ban Jelačić → Tkalčićeva</strong><p class="small">Check-in, poi centro a piedi. Cena e cocktail lungo Tkalčićeva o nelle vie laterali.</p><a class="map" href="https://www.google.com/maps/search/?api=1&query=Ban+Jelacic+Square+Zagreb" target="_blank">Google Maps</a></div>
+<div class="time">16 · 09:00</div><div class="stop"><input id="zg2" class="check" type="checkbox"><label class="tick" for="zg2"></label><strong>Dolac Market + Cattedrale esterni</strong><a class="map" href="https://www.google.com/maps/search/?api=1&query=Dolac+Market+Zagreb" target="_blank">Google Maps</a></div>
+<div class="time">10:00</div><div class="stop"><input id="zg3" class="check" type="checkbox"><label class="tick" for="zg3"></label><strong>Upper Town: Stone Gate, St Mark's, Lotrščak</strong><p class="small">La storica funicolare collega Lower e Upper Town; è soprattutto un'esperienza breve più che un vero risparmio di cammino.</p><a class="map" href="https://www.google.com/maps/search/?api=1&query=St+Marks+Church+Zagreb" target="_blank">Google Maps</a></div>
+<div class="time">12:15</div><div class="stop"><input id="zg4" class="check" type="checkbox"><label class="tick" for="zg4"></label><strong>Pranzo rapido + recupero bagagli</strong></div>
+<div class="time">POM.</div><div class="stop"><input id="zg5" class="check" type="checkbox"><label class="tick" for="zg5"></label><strong>Bus Zagabria → Sarajevo</strong><p class="small">La tratta richiede circa 7h10 nelle corse FlixBus. Se vuoi arrivare prima di mezzanotte, privilegia una partenza nel primo pomeriggio quando disponibile.</p></div></div></section>
 
-  .section {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    margin-bottom: 16px;
-    overflow: hidden;
-  }
-  .section-head {
-    display: flex; align-items: center; gap: 10px;
-    padding: 14px 14px 12px 16px;
-    border-bottom: 1px solid var(--line);
-  }
-  .section-emoji {
-    font-size: 20px; cursor: pointer; user-select: none;
-    border: none; background: transparent; padding: 0; line-height: 1;
-  }
-  .section-title {
-    font-weight: 700; font-size: 17px; flex: 1; min-width: 0;
-    letter-spacing: -.01em;
-  }
-  .section-count {
-    font-size: 12px; color: var(--muted); background: var(--bg);
-    border: 1px solid var(--line); border-radius: 999px; padding: 3px 9px; white-space: nowrap;
-  }
-  .items { list-style: none; margin: 0; padding: 6px 6px 10px; }
-  .item {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 9px 10px; border-radius: 12px;
-  }
-  .item:hover { background: var(--bg); }
-  .item .box {
-    appearance: none; -webkit-appearance: none;
-    width: 22px; height: 22px; margin: 1px 0 0; flex: none;
-    border: 2px solid var(--muted); border-radius: 7px; cursor: pointer;
-    display: grid; place-items: center; transition: .15s; background: transparent;
-  }
-  .item .box:checked { background: var(--accent); border-color: var(--accent); }
-  .item .box:checked::after {
-    content: ""; width: 6px; height: 11px;
-    border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg) translate(-.5px,-1px);
-  }
-  @media (prefers-color-scheme: dark) { .item .box:checked::after { border-color: #06110f; } }
-  .item .text { flex: 1; min-width: 0; padding-top: 1px; word-break: break-word; }
-  .item.done .text { color: var(--done); text-decoration: line-through; text-decoration-thickness: 1px; }
-  .item .del {
-    border: none; background: transparent; color: var(--muted);
-    cursor: pointer; font-size: 17px; line-height: 1; padding: 2px 4px;
-    opacity: 0; transition: .15s; flex: none; border-radius: 8px;
-  }
-  .item:hover .del, .item:focus-within .del { opacity: 1; }
-  .item .del:hover { color: var(--danger); background: var(--bg); }
+<section id="sa" class="card powder"><div class="kicker">16-18 agosto · 2 notti</div><h2>Sarajevo</h2><div class="timeline">
+<div class="time">16 · sera</div><div class="stop"><input id="sa1" class="check" type="checkbox"><label class="tick" for="sa1"></label><strong>Arrivo + ćevapi senza programma pesante</strong><p class="small">Se arrivi tardi, limita la serata a Baščaršija.</p></div>
+<div class="time">17 · 09:30</div><div class="stop"><input id="sa2" class="check" type="checkbox"><label class="tick" for="sa2"></label><strong>Baščaršija + Sebilj + Gazi Husrev-beg</strong><a class="map" href="https://www.google.com/maps/search/?api=1&query=Bascarsija+Sarajevo" target="_blank">Google Maps</a></div>
+<div class="time">11:30</div><div class="stop"><input id="sa3" class="check" type="checkbox"><label class="tick" for="sa3"></label><strong>Meeting of Cultures → Latin Bridge</strong><a class="map" href="https://www.google.com/maps/search/?api=1&query=Latin+Bridge+Sarajevo" target="_blank">Google Maps</a></div>
+<div class="time">13:00</div><div class="stop"><input id="sa4" class="check" type="checkbox"><label class="tick" for="sa4"></label><strong>Pranzo bosniaco</strong><p class="small">Ćevapi, burek o klepe; per dessert tufahija o baklava, poi caffè bosniaco.</p></div>
+<div class="time">15:00</div><div class="stop"><input id="sa5" class="check" type="checkbox"><label class="tick" for="sa5"></label><strong>Museo / storia contemporanea</strong><p class="small">Scegli uno tra History Museum, War Childhood Museum o Gallery 11/07/95 in base al tono che vuoi dare alla giornata.</p></div>
+<div class="time">18:30</div><div class="stop"><input id="sa6" class="check" type="checkbox"><label class="tick" for="sa6"></label><strong>Yellow Fortress al tramonto</strong><a class="map" href="https://www.google.com/maps/search/?api=1&query=Yellow+Fortress+Sarajevo" target="_blank">Google Maps</a></div>
+<div class="time">18 · 07:15</div><div class="stop"><input id="sa7" class="check" type="checkbox"><label class="tick" for="sa7"></label><strong>Bus diretto Sarajevo → Dubrovnik</strong><p class="small">Una corsa diretta riportata attualmente parte al mattino e impiega circa 6h25. Conferma l'orario sul biglietto perché le tabelle possono cambiare.</p></div></div><div class="note"><b>Trasporto urbano:</b> tram, trolleybus, bus e minibus; i biglietti risultano più economici al chiosco che acquistati dal conducente.</div></section>
 
-  .add-item {
-    display: flex; align-items: center; gap: 8px;
-    padding: 6px 12px 4px; color: var(--muted); cursor: text;
-    font-size: 14px;
-  }
-  .add-item::before { content: "+"; font-size: 18px; line-height: 1; }
-  .add-item input {
-    flex: 1; border: none; background: transparent; color: var(--ink);
-    font: inherit; padding: 6px 0; outline: none;
-  }
-  .add-item input::placeholder { color: var(--muted); }
+<section id="du" class="card acid"><div class="kicker">18-20 agosto · 2 notti</div><h2>Dubrovnik</h2><div class="timeline">
+<div class="time">18 · 15:30</div><div class="stop"><input id="du1" class="check" type="checkbox"><label class="tick" for="du1"></label><strong>Old Town senza fretta</strong><p class="small">Pile Gate → Stradun → Rector's Palace → porto vecchio.</p><a class="map" href="https://www.google.com/maps/search/?api=1&query=Pile+Gate+Dubrovnik" target="_blank">Google Maps</a></div>
+<div class="time">18:30</div><div class="stop"><input id="du2" class="check" type="checkbox"><label class="tick" for="du2"></label><strong>Banje Beach oppure aperitivo vista mura</strong><a class="map" href="https://www.google.com/maps/search/?api=1&query=Banje+Beach+Dubrovnik" target="_blank">Google Maps</a></div>
+<div class="time">19 · 08:00</div><div class="stop"><input id="du3" class="check" type="checkbox"><label class="tick" for="du3"></label><strong>Mura di Dubrovnik presto</strong><p class="small">Calcola 1h30-2h e porta acqua; evita le ore più calde.</p></div>
+<div class="time">10:30</div><div class="stop"><input id="du4" class="check" type="checkbox"><label class="tick" for="du4"></label><strong>Barca per Lokrum + bagno</strong><p class="small">La traversata dal porto vecchio dura circa 10 minuti. Sull'isola: Mrtvo More, giardino botanico e Fort Royal.</p><a class="map" href="https://www.google.com/maps/search/?api=1&query=Lokrum+Dubrovnik" target="_blank">Google Maps</a></div>
+<div class="time">17:30</div><div class="stop"><input id="du5" class="check" type="checkbox"><label class="tick" for="du5"></label><strong>Rientro + tramonto</strong><p class="small">Opzione panoramica: Srđ. Se preferisci mare, resta su Lokrum più a lungo.</p></div>
+<div class="time">20 · AM</div><div class="stop"><input id="du6" class="check" type="checkbox"><label class="tick" for="du6"></label><strong>Bus Dubrovnik → Budva / Sveti Stefan</strong><p class="small">I diretti per Budva impiegano circa 2h30-3h15, ma la frontiera può allungare il viaggio. Da Budva prosegui con bus locale/taxi verso Sveti Stefan.</p></div></div></section>
 
-  .toolbar {
-    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px;
-  }
-  button.tool {
-    border: 1px solid var(--line); background: var(--panel); color: var(--ink);
-    border-radius: 10px; padding: 9px 14px; font: inherit; font-size: 14px;
-    cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
-    box-shadow: var(--shadow);
-  }
-  button.tool:hover { border-color: var(--accent); color: var(--accent); }
-  button.tool.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-  @media (prefers-color-scheme: dark){ button.tool.primary { color:#06110f; } }
-  button.tool.primary:hover { filter: brightness(1.05); color: #fff; }
-  @media (prefers-color-scheme: dark){ button.tool.primary:hover { color:#06110f; } }
-
-  .saved-tag {
-    color: var(--muted); font-size: 13px; margin-left: auto;
-    display: inline-flex; align-items: center; gap: 6px; align-self: center;
-  }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
-
-  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 28px; }
-  input[type=file] { display: none; }
-
-  @media print {
-    body { background: #fff; }
-    .toolbar, .add-item, .item .del, .section-count, .saved-tag, footer { display: none !important; }
-    .section, .progress-card { box-shadow: none; border-color: #ccc; break-inside: avoid; }
-  }
-</style>
-</head>
-<body>
-<div class="wrap">
-  <header>
-    <h1><span class="flag">🏔️</span><span contenteditable="true" id="pageTitle" spellcheck="false">Balkan Trip Checklist</span></h1>
-    <p class="subtitle" contenteditable="true" id="pageSub" spellcheck="false">Our shared plan — tap anything to edit. Saves automatically on this device.</p>
-  </header>
-
-  <div class="progress-card">
-    <div class="ring">
-      <svg width="58" height="58" viewBox="0 0 58 58">
-        <circle class="track" cx="29" cy="29" r="25" fill="none" stroke-width="6"></circle>
-        <circle class="fill" cx="29" cy="29" r="25" fill="none" stroke-width="6"
-                stroke-dasharray="157" stroke-dashoffset="157" id="ringFill"></circle>
-      </svg>
-      <div class="pct" id="ringPct">0%</div>
-    </div>
-    <div class="progress-meta">
-      <div class="big" id="progBig">Let's get packing</div>
-      <div class="small" id="progSmall">0 of 0 done</div>
-    </div>
-  </div>
-
-  <div id="sections"></div>
-
-  <div class="toolbar">
-    <button class="tool primary" id="addSection">＋ Add section</button>
-    <button class="tool" id="exportBtn">⬇ Export</button>
-    <button class="tool" id="importBtn">⬆ Import</button>
-    <button class="tool" id="printBtn">🖨 Print / PDF</button>
-    <button class="tool" id="resetBtn">↺ Reset</button>
-    <input type="file" id="importFile" accept="application/json,.json">
-    <span class="saved-tag"><span class="dot"></span><span id="savedText">Saved</span></span>
-  </div>
-
-  <footer>Everything you type is stored privately in this browser. Use Export to back up or share with your partner.</footer>
-</div>
-
-<script>
-(function () {
-  "use strict";
-  var STORE_KEY = "balkan-checklist-v1";
-
-  var DEFAULT_DATA = {
-    title: "Balkan Trip Checklist",
-    subtitle: "Our shared plan — tap anything to edit. Saves automatically on this device.",
-    sections: [
-      { emoji: "🛂", name: "Documents & money", items: [
-        "Passports valid 6+ months",
-        "Print + photo of passports (cloud backup)",
-        "EHIC / travel insurance details",
-        "Driving licence + IDP (car hire)",
-        "Some euros + a card that works abroad",
-        "Note: many countries are NOT euro — check currency per stop",
-        "Vaccination / health notes"
-      ]},
-      { emoji: "🧳", name: "Packing", items: [
-        "Light layers + one warm jumper (mountains get cold)",
-        "Rain jacket",
-        "Comfortable walking shoes",
-        "Swimwear (coast + lakes)",
-        "Universal plug adapter (Type C/F)",
-        "Power bank",
-        "Toiletries + any medication",
-        "Reusable water bottle"
-      ]},
-      { emoji: "📱", name: "Before we go", items: [
-        "Download offline maps (each country)",
-        "eSIM / roaming sorted",
-        "Screenshot all bookings",
-        "Tell bank we're travelling",
-        "Share itinerary with family",
-        "Check driving rules (vignettes, tolls)"
-      ]},
-      { emoji: "🏨", name: "Bookings", items: [
-        "Flights",
-        "First & last night accommodation",
-        "Car hire",
-        "Any must-do tours / tickets"
-      ]},
-      { emoji: "🗺️", name: "Places we want to see", items: [
-        "Kotor Bay, Montenegro",
-        "Old Town, Dubrovnik",
-        "Mostar bridge, Bosnia",
-        "Lake Ohrid, North Macedonia",
-        "Theth / Valbona, Albanian Alps",
-        "Add your own…"
-      ]}
-    ]
-  };
-
-  var data = load();
-
-  function load() {
-    try {
-      var raw = localStorage.getItem(STORE_KEY);
-      if (!raw) return clone(DEFAULT_DATA);
-      var parsed = JSON.parse(raw);
-      if (!parsed || !Array.isArray(parsed.sections)) return clone(DEFAULT_DATA);
-      return parsed;
-    } catch (e) { return clone(DEFAULT_DATA); }
-  }
-  function clone(o) { return JSON.parse(JSON.stringify(o)); }
-  function uid() { return "i" + (idCounter++); }
-  var idCounter = 0;
-
-  function normalize(d) {
-    var out = (d && Array.isArray(d.sections)) ? d : clone(DEFAULT_DATA);
-    out.title = out.title || DEFAULT_DATA.title;
-    out.subtitle = out.subtitle || DEFAULT_DATA.subtitle;
-    out.sections.forEach(function (s) {
-      s.id = s.id || uid();
-      s.items = (s.items || []).map(function (it) {
-        if (typeof it === "string") return { id: uid(), text: it, done: false };
-        return { id: it.id || uid(), text: it.text || "", done: !!it.done };
-      });
-    });
-    return out;
-  }
-
-  data = normalize(data);
-
-  var saveTimer = null;
-  function save() {
-    try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
-    setStatus("saving");
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(function () { setStatus("saved"); }, 500);
-  }
-
-  var sectionsEl = document.getElementById("sections");
-
-  function render() {
-    sectionsEl.innerHTML = "";
-    data.sections.forEach(function (section) {
-      sectionsEl.appendChild(renderSection(section));
-    });
-    updateProgress();
-  }
-
-  function renderSection(section) {
-    var el = document.createElement("section");
-    el.className = "section";
-
-    var head = document.createElement("div");
-    head.className = "section-head";
-
-    var emoji = document.createElement("button");
-    emoji.className = "section-emoji";
-    emoji.textContent = section.emoji || "📌";
-    emoji.title = "Change icon";
-    emoji.addEventListener("click", function () {
-      var v = prompt("Icon for this section (an emoji):", section.emoji || "");
-      if (v !== null) { section.emoji = v.trim().slice(0, 4) || section.emoji; emoji.textContent = section.emoji; save(); }
-    });
-
-    var title = document.createElement("div");
-    title.className = "section-title";
-    title.contentEditable = "true";
-    title.spellcheck = false;
-    title.textContent = section.name;
-    title.addEventListener("input", function () { section.name = title.textContent; save(); });
-
-    var count = document.createElement("span");
-    count.className = "section-count";
-
-    var delSec = document.createElement("button");
-    delSec.className = "item";
-    delSec.style.cssText = "border:none;background:transparent;color:var(--muted);cursor:pointer;padding:2px 6px;font-size:16px;";
-    delSec.textContent = "🗑";
-    delSec.title = "Delete section";
-    delSec.addEventListener("click", function () {
-      if (confirm('Delete section "' + section.name + '" and all its items?')) {
-        data.sections = data.sections.filter(function (s) { return s.id !== section.id; });
-        save(); render();
-      }
-    });
-
-    head.appendChild(emoji);
-    head.appendChild(title);
-    head.appendChild(count);
-    head.appendChild(delSec);
-
-    var list = document.createElement("ul");
-    list.className = "items";
-
-    section.items.forEach(function (item) {
-      list.appendChild(renderItem(section, item, count));
-    });
-
-    var add = document.createElement("label");
-    add.className = "add-item";
-    var input = document.createElement("input");
-    input.type = "text";
-    input.placeholder = "Add an item…";
-    input.addEventListener("keydown", function (e) {
-      if (e.key === "Enter") {
-        var text = input.value.trim();
-        if (text) {
-          var item = { id: uid(), text: text, done: false };
-          section.items.push(item);
-          list.insertBefore(renderItem(section, item, count), add);
-          input.value = "";
-          save(); updateCount(section, count); updateProgress();
-        }
-      }
-    });
-    add.appendChild(input);
-    list.appendChild(add);
-
-    el.appendChild(head);
-    el.appendChild(list);
-    updateCount(section, count);
-    return el;
-  }
-
-  function renderItem(section, item, countEl) {
-    var li = document.createElement("li");
-    li.className = "item" + (item.done ? " done" : "");
-
-    var box = document.createElement("input");
-    box.type = "checkbox";
-    box.className = "box";
-    box.checked = item.done;
-    box.addEventListener("change", function () {
-      item.done = box.checked;
-      li.classList.toggle("done", item.done);
-      save(); updateCount(section, countEl); updateProgress();
-    });
-
-    var text = document.createElement("div");
-    text.className = "text";
-    text.contentEditable = "true";
-    text.spellcheck = false;
-    text.textContent = item.text;
-    text.addEventListener("input", function () { item.text = text.textContent; save(); });
-    text.addEventListener("keydown", function (e) {
-      if (e.key === "Enter") { e.preventDefault(); text.blur(); }
-    });
-
-    var del = document.createElement("button");
-    del.className = "del";
-    del.innerHTML = "✕";
-    del.title = "Delete";
-    del.addEventListener("click", function () {
-      section.items = section.items.filter(function (x) { return x.id !== item.id; });
-      li.remove();
-      save(); updateCount(section, countEl); updateProgress();
-    });
-
-    li.appendChild(box);
-    li.appendChild(text);
-    li.appendChild(del);
-    return li;
-  }
-
-  function updateCount(section, countEl) {
-    var total = section.items.length;
-    var done = section.items.filter(function (i) { return i.done; }).length;
-    countEl.textContent = done + "/" + total;
-  }
-
-  function updateProgress() {
-    var total = 0, done = 0;
-    data.sections.forEach(function (s) {
-      total += s.items.length;
-      done += s.items.filter(function (i) { return i.done; }).length;
-    });
-    var pct = total ? Math.round((done / total) * 100) : 0;
-    var C = 2 * Math.PI * 25;
-    document.getElementById("ringFill").setAttribute("stroke-dasharray", C.toFixed(1));
-    document.getElementById("ringFill").setAttribute("stroke-dashoffset", (C * (1 - pct / 100)).toFixed(1));
-    document.getElementById("ringPct").textContent = pct + "%";
-    document.getElementById("progSmall").textContent = done + " of " + total + " done";
-    var big = "Let's get packing";
-    if (pct === 100 && total > 0) big = "All done — dobar put! 🎉";
-    else if (pct >= 66) big = "Nearly there";
-    else if (pct >= 33) big = "Making progress";
-    else if (done > 0) big = "Off we go";
-    document.getElementById("progBig").textContent = big;
-  }
-
-  // Title / subtitle editing
-  var titleEl = document.getElementById("pageTitle");
-  var subEl = document.getElementById("pageSub");
-  titleEl.textContent = data.title || DEFAULT_DATA.title;
-  subEl.textContent = data.subtitle || DEFAULT_DATA.subtitle;
-  document.title = titleEl.textContent + " · checklist";
-  titleEl.addEventListener("input", function () { data.title = titleEl.textContent; document.title = titleEl.textContent + " · checklist"; save(); });
-  titleEl.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); titleEl.blur(); } });
-  subEl.addEventListener("input", function () { data.subtitle = subEl.textContent; save(); });
-
-  // Toolbar
-  document.getElementById("addSection").addEventListener("click", function () {
-    var section = { id: uid(), emoji: "📌", name: "New section", items: [] };
-    data.sections.push(section);
-    var node = renderSection(section);
-    sectionsEl.appendChild(node);
-    updateProgress(); save();
-    var t = node.querySelector(".section-title");
-    t.focus();
-    document.getSelection().selectAllChildren(t);
-    node.scrollIntoView({ behavior: "smooth", block: "center" });
-  });
-
-  document.getElementById("resetBtn").addEventListener("click", function () {
-    if (confirm("Reset the whole checklist back to the starter list? This clears your current one on this device.")) {
-      applyData(clone(DEFAULT_DATA));
-      save();
-    }
-  });
-
-  document.getElementById("printBtn").addEventListener("click", function () { window.print(); });
-
-  document.getElementById("exportBtn").addEventListener("click", function () {
-    var blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement("a");
-    a.href = url;
-    a.download = "balkan-checklist.json";
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-  });
-
-  document.getElementById("importBtn").addEventListener("click", function () {
-    document.getElementById("importFile").click();
-  });
-  document.getElementById("importFile").addEventListener("change", function (e) {
-    var file = e.target.files[0];
-    if (!file) return;
-    var reader = new FileReader();
-    reader.onload = function () {
-      try {
-        var parsed = JSON.parse(reader.result);
-        if (!parsed || !Array.isArray(parsed.sections)) throw new Error("bad");
-        applyData(parsed);
-        save();
-        alert("Checklist imported.");
-      } catch (err) { alert("That file didn't look like a checklist export."); }
-      e.target.value = "";
-    };
-    reader.readAsText(file);
-  });
-
-  function setStatus(state) {
-    var st = document.getElementById("savedText");
-    if (st) st.textContent = state === "saving" ? "Saving…" : "Saved on this device";
-  }
-
-  function applyData(d) {
-    data = normalize(d);
-    titleEl.textContent = data.title || DEFAULT_DATA.title;
-    subEl.textContent = data.subtitle || DEFAULT_DATA.subtitle;
-    document.title = titleEl.textContent + " · checklist";
-    try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
-    render();
-  }
-
-  render();
-  setStatus("saved");
-})();
-</script>
-</body>
-</html>
+<section id="me" class="card powder"><div class="kicker">20-25 agosto · 5 notti</div><h2>Sveti Stefan + spiagge del Montenegro</h2><p>Base rilassata, ma con una spiaggia diversa quasi ogni giorno. La Budva Riviera rende facile alternare baie e cittadine; per una giornata completamente diversa, scendi verso Ulcinj.</p><div class="beaches">
+<div class="beach"><b>20 · Sveti Stefan</b><span class="small">Check-in, spiaggia sotto il borgo-isola e tramonto.</span><a class="map" href="https://www.google.com/maps/search/?api=1&query=Sveti+Stefan+Beach+Montenegro" target="_blank">Maps</a></div>
+<div class="beach"><b>21 · Miločer + Pržno</b><span class="small">Passeggiata costiera, pini, baie più raccolte; pranzo di pesce a Pržno.</span><a class="map" href="https://www.google.com/maps/search/?api=1&query=Przno+Beach+Montenegro" target="_blank">Maps</a></div>
+<div class="beach"><b>22 · Kamenovo + Bečići</b><span class="small">Kamenovo per acqua turchese; Bečići per lunga passeggiata e più servizi.</span><a class="map" href="https://www.google.com/maps/search/?api=1&query=Kamenovo+Beach+Montenegro" target="_blank">Maps</a></div>
+<div class="beach"><b>23 · Mogren + Budva</b><span class="small">Mattina a Mogren I/II, pomeriggio Old Town Budva, cena e nightlife.</span><a class="map" href="https://www.google.com/maps/search/?api=1&query=Mogren+Beach+Budva" target="_blank">Maps</a></div>
+<div class="beach"><b>24 · Drobni Pijesak + Petrovac</b><span class="small">Giornata più quieta; abbina una cala a Petrovac per cena/passeggiata.</span><a class="map" href="https://www.google.com/maps/search/?api=1&query=Drobni+Pijesak+Beach" target="_blank">Maps</a></div>
+<div class="beach"><b>Bonus · Ulcinj / Velika Plaža</b><span class="small">Se vuoi sabbia e orizzonte aperto: escursione più lunga verso la spiaggia di 13 km.</span><a class="map" href="https://www.google.com/maps/search/?api=1&query=Velika+Plaza+Ulcinj" target="_blank">Maps</a></div></div>
+<h3>Checklist Montenegro</h3><div class="timeline">
+<div class="time">20</div><div class="stop"><input id="me1" class="check" type="checkbox"><label class="tick" for="me1"></label><strong>Bagno + tramonto Sveti Stefan</strong></div>
+<div class="time">21</div><div class="stop"><input id="me2" class="check" type="checkbox"><label class="tick" for="me2"></label><strong>Miločer Park + Pržno</strong></div>
+<div class="time">22</div><div class="stop"><input id="me3" class="check" type="checkbox"><label class="tick" for="me3"></label><strong>Kamenovo + Bečići</strong></div>
+<div class="time">23</div><div class="stop"><input id="me4" class="check" type="checkbox"><label class="tick" for="me4"></label><strong>Mogren + Budva Old Town + nightlife</strong></div>
+<div class="time">24</div><div class="stop"><input id="me5" class="check" type="checkbox"><label class="tick" for="me5"></label><strong>Drobni Pijesak / Petrovac oppure Ulcinj</strong></div></div>
+<div class="note"><b>Nota Sveti Stefan:</b> il complesso alberghiero dell'isola era previsto in riapertura entro giugno 2026 secondo il governo montenegrino; accessi e condizioni delle aree legate al resort possono quindi differire rispetto agli anni precedenti. La guida tratta la zona come base costiera e non presume accesso all'interno dell'isola.</div></section>
+<section class="card acid"><h2>Nightlife senza sacrificare il viaggio</h2><p><b>Zagabria:</b> Tkalčićeva per bar hopping easy. <b>Sarajevo:</b> cocktail/caffè nel centro, serata non troppo lunga prima del bus. <b>Dubrovnik:</b> drink nell'Old Town o Buža-style cliff bars. <b>Montenegro:</b> concentra la notte più lunga a Budva il 23, lasciando Sveti Stefan e Pržno alle serate lente.</p></section>
+<div class="footer">Travel Balkan 2026 · tocca un testo per modificarlo · tutto salvato solo sul dispositivo</div></main></div><script>(()=>{const K='travelbalkan-2026-v2',boxes=[...document.querySelectorAll('.check')],bar=document.querySelector('.bar i'),count=document.querySelector('#count');let state={};try{state=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}function render(){let n=0;boxes.forEach(x=>{x.checked=!!state[x.id];const s=x.closest('.stop');if(s)s.classList.toggle('done',x.checked);if(x.checked)n++});bar.style.width=(boxes.length?100*n/boxes.length:0)+'%';count.textContent=n+'/'+boxes.length}boxes.forEach(x=>x.addEventListener('change',()=>{state[x.id]=x.checked;localStorage.setItem(K,JSON.stringify(state));render()}));document.querySelector('#reset').onclick=()=>{if(confirm('Azzerare tutte le spunte?')){state={};localStorage.removeItem(K);render()}};
+/* Testo modificabile: titoli e note delle tappe + spiagge, salvati sul dispositivo */
+const EK='travelbalkan-2026-edits-v1';let edits={};try{edits=JSON.parse(localStorage.getItem(EK)||'{}')}catch(e){}
+const editables=[...document.querySelectorAll('.stop>strong, .stop>p.small, .beach>b, .beach>span.small')];
+editables.forEach((el,i)=>{const k='e'+i;el.dataset.ek=k;if(edits[k]!=null)el.textContent=edits[k];el.setAttribute('contenteditable','true');el.setAttribute('spellcheck','false');el.addEventListener('input',()=>{edits[k]=el.textContent;localStorage.setItem(EK,JSON.stringify(edits))});el.addEventListener('keydown',e=>{if(e.key==='Enter'&&el.tagName==='STRONG'){e.preventDefault();el.blur()}})});
+render();})();</script></body></html>
