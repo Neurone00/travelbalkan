@@ -14,10 +14,30 @@ browser (localStorage), so it's there next time you open it.
 - **Print / PDF** for a paper copy.
 - **Reset** back to the starter list.
 
+## Who Ruled Yugoslavia (`history.html`)
+
+A companion map for the trip: all seven ex-Yugoslav countries on one timeline
+running from 200 BC to today. Drag the years and each country repaints for
+whoever was ruling it — Rome, Byzantium, the Sultan, Vienna, Belgrade.
+
+- **Tap a country** (or its code beside the timeline) to isolate it: the map
+  zooms in, its own cities appear, and a dashed line points to the seat of
+  power that ruled it — Buda, Istanbul, Vienna — until that seat finally comes
+  home.
+- **The timeline is zoomable**: seven stacked lanes, a draggable overview
+  window, ±1/10/100-year steps, a year box, jump-to-next-change buttons, period
+  presets, and keyboard control (← →, shift for 10, PageUp/Down for 100,
+  `[` / `]` for era boundaries).
+- **Striped fills** mark the centuries with two masters at once — Venetian
+  coast over Hungarian interior, Habsburg Vojvodina over Ottoman Serbia.
+
+Boundary geometry comes from Natural Earth (1:10m), simplified but kept as a
+shared-arc topology so borders never gap or overlap.
+
 ## Where it's hosted
 
-It's a plain static page (`index.html`), deployed to **GitHub Pages** by the
-workflow in `.github/workflows/deploy.yml`. No server, no database.
+Plain static pages (`index.html`, `history.html`), deployed to **GitHub Pages**
+by the workflow in `.github/workflows/deploy.yml`. No server, no database.
 
 ### One-time setup to make it live
 
